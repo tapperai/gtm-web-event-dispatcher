@@ -44,10 +44,10 @@ const sendPixel = require('sendPixel');
 const encodeUriComponent = require('encodeUriComponent'); 
 const localStorage = require('localStorage');
 
-const tclid = localStorage.getItem("tclid")[0]; 
-const event = data["Event Name"]; 
+const tclid = localStorage.getItem("tclid");
+const event = data["Event Name"];
 
-if (localStorage.getItem("tclid")[0] && event) {
+if (localStorage.getItem("tclid") && event) {
   const url = 'https://api.tapper.ai/gtm/track?'+ "tclid=" + encodeUriComponent(tclid) + "&event=" + encodeUriComponent(event); 
   
   sendPixel(url, data.gtmOnSuccess, data.gtmOnFailure);
