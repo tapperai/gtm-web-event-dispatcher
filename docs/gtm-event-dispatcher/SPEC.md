@@ -25,9 +25,12 @@ monorepo-of-repos.
 was "RETIRED-IN-EFFECT". That is **not** confirmed by the repo itself:
 - The GitHub repo `tapperai/gtm-web-event-dispatcher` is **not archived**
   (`isArchived: false`).
-- It was pushed to as recently as **2026-07-12** (`ffe6c6f` — six weeks before
-  this sweep), including a commit that fixes a real bug (tclid truncation, see
-  below) and a `CLAUDE.md` rewrite.
+- The repo's true most-recent activity is on the `flawless-fixes` branch, not
+  `master`: `9805e41` (**2026-06-28**) fixes a real bug (tclid truncation, see
+  below), and `274b1dc` (**2026-07-12** — six weeks before this sweep) does a
+  `CLAUDE.md` rewrite. `master`'s own HEAD, `ffe6c6f`, is a stale
+  `metadata.yaml` bump from **2024-03-12** and touches neither the tclid fix
+  nor `CLAUDE.md`.
 - That most-recent work lives on a branch, `gtm-web-event-dispatcher/flawless-fixes`,
   which was **pushed directly and never opened as a PR** and is **not merged
   into `master`** (GitHub's default branch, per `git remote show origin`).
