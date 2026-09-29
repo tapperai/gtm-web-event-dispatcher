@@ -24,6 +24,13 @@ Categories:
 
 ## P0 — needs verification
 
+- **2026-09-29: receiving endpoint gone.** `api.tapper.ai/gtm/track` returns
+  404. back-end stopped serving it when its Express-to-Fastify rewrite
+  (`1df7f45a`) reached prod on 2026-01-27; the last image with the route was
+  `fd857e33` (2026-01-26). `dcc475b3` (2026-02-26) only deleted the dead file.
+  The `flawless-fixes` merge question is moot. The open decision is retire
+  (Gallery removal first, then `gh repo archive`, the roster Repositories row
+  and root CLAUDE.md) or restore an endpoint; see the spec's Remaining Work.
 - **Merge decision for `flawless-fixes` branch**: this branch (pushed
   2026-07-12, never opened as a PR, never merged) fixes a real `tclid`
   truncation bug in `template.tpl` and rewrites `CLAUDE.md`. Nobody has

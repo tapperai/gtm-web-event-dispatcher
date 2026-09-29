@@ -1,5 +1,5 @@
 homepage: "https://tapper.ai"
-documentation: "https://docs.tapper.ai/gtm/web-event-dispatcher"
+documentation: "https://docs.tapper.ai"
 versions:
   - sha: 75029f9f042436637044ee6c07c0d01be21c20eb 
     changeNotes: Update identifier retrieval method. 

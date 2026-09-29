@@ -52,13 +52,16 @@ Flow: pixel dispatch
    ```
    https://api.tapper.ai/gtm/track?tclid=test-tclid-123&event=test_event
    ```
+   As of 2026-09-29 this request returns 404 (back-end's
+   `Route GET:/gtm/track not found`). back-end stopped serving `/gtm/track`
+   when its Express-to-Fastify rewrite (`1df7f45a`) reached prod on
+   2026-01-27, so there is no server-side receipt to check.
 6. **No-op path**: clear `localStorage.removeItem("tclid")` and reload — the
    tag should still show **Fired** in GTM (it calls `gtmOnSuccess()` even in
    the no-op branch) but no pixel request should appear in the Network tab.
 
-**Verify server-side receipt:** this repo cannot verify that
-`api.tapper.ai/gtm/track` recorded the event — that endpoint is owned by
-`back-end` / `tracker`; check there for confirmation the pixel was ingested.
+**Verify server-side receipt:** not possible; the endpoint has returned 404
+since 2026-01-27 (see the spec's Overview).
 
 ---
 
