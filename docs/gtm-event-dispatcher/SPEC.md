@@ -40,16 +40,19 @@ was "RETIRED-IN-EFFECT". That is **not** confirmed by the repo itself:
 - The most recent change to the template code is on the unmerged
   `flawless-fixes` branch, not `master`: `9805e41` (**2026-06-28**) fixes a real bug (tclid truncation, see
   below), and `274b1dc` (**2026-07-12** — six weeks before this sweep) does a
-  `CLAUDE.md` rewrite. `master` HEAD is now `7323684`, which is docs and
+  `CLAUDE.md` rewrite. Before PR #2, `master` HEAD was `7323684`, which is docs and
   submodule only: PR #1 (`febf7bc`) wired the docs on 2026-08-27, then `7323684`
   switched the submodule URL to https the same day. The last `template.tpl`
-  change on `master` is `7a7be66` and the last `metadata.yaml` change is
-  `ffe6c6f`, both 2024-03-12.
+  change on `master` is `7a7be66` and the last `metadata.yaml` change before
+  PR #2 is `ffe6c6f`, both 2024-03-12. PR #2 (2026-09-29, the deprecation
+  docs) edits only `metadata.yaml`'s `documentation:` line; `versions:` is
+  untouched.
 - That most-recent work lives on a branch, `gtm-web-event-dispatcher/flawless-fixes`,
   which was **pushed directly and never opened as a PR** and is **not merged
   into `master`** (GitHub's default branch, per `git remote show origin`).
   `master` is still on the older, buggier code (`ffe6c6f`'s parent chain).
-- One PR ever: #1 (the docs wiring, merged 2026-08-27). `flawless-fixes` was
+- Before PR #2 (this deprecation docs change, opened 2026-09-29) there was
+  one PR: #1 (the docs wiring, merged 2026-08-27). `flawless-fixes` was
   never opened as a PR, so its fix was never reviewed or merged.
 - A remote branch `main` also exists at `9805e41`, the tclid fix commit and
   parent of `flawless-fixes`. `main` was the original default branch. `master`
