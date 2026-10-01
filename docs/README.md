@@ -14,7 +14,7 @@ one domain.
 
 | Domain | Status | Description |
 |--------|--------|-------------|
-| [gtm-event-dispatcher](gtm-event-dispatcher/SPEC.md) | `SHIPPED` | GTM custom tag that reads `tclid` from `localStorage` and fires a tracking pixel to `api.tapper.ai/gtm/track`. |
+| [gtm-event-dispatcher](gtm-event-dispatcher/SPEC.md) | `DEPRECATED` | GTM custom tag that reads `tclid` from `localStorage` and fires a tracking pixel to `api.tapper.ai/gtm/track`; back-end stopped serving that endpoint on 2026-01-27 (404), so the template is inert. |
 
 ## Other docs
 

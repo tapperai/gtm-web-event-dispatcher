@@ -9,4 +9,3 @@ This tag template retrieves only the specific Tapper identifier from local stora
 
 ## Resources
 - [**Tapper Homepage**](https://tapper.ai)
-- [**Tapper Event Dispatcher Documentation**](https://docs.tapper.ai/gtm/web-event-dispatcher) 
