@@ -52,8 +52,9 @@ Flow: pixel dispatch
    ```
    https://api.tapper.ai/gtm/track?tclid=test-tclid-123&event=test_event
    ```
-   As of 2026-09-29 this request returns 404 (back-end's
-   `Route GET:/gtm/track not found`). back-end stopped serving `/gtm/track`
+   As of 2026-10-01 this request returns 404 with back-end's not-found body,
+   `{"error":"Not Found","message":"Route GET:/gtm/track?tclid=test-tclid-123&event=test_event not found","status_code":404}`
+   (the message echoes the full URL, query string included). back-end stopped serving `/gtm/track`
    when its Express-to-Fastify rewrite (`1df7f45a`) reached prod on
    2026-01-27, so there is no server-side receipt to check.
 6. **No-op path**: clear `localStorage.removeItem("tclid")` and reload — the
@@ -65,7 +66,7 @@ since 2026-01-27 (see the spec's Overview).
 
 ---
 
-## Known Gap (verified 2026-08-26)
+## Known Gap (verified 2026-08-26, re-checked 2026-10-01)
 
 `master`'s `template.tpl` calls `localStorage.getItem("tclid")[0]` — indexing
 `[0]` into the result, which truncates `tclid` to its first character before

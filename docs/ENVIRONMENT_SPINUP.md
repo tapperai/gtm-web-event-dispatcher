@@ -1,9 +1,9 @@
 # GTM Event Dispatcher — Environment Spinup
 
-> **Status:** `SHIPPED`
+> **Status:** `DEPRECATED`
 >
 > **Created:** 2026-08-26
-> **Last updated:** 2026-09-29
+> **Last updated:** 2026-10-01
 >
 > **Implemented in:** gtm-web-event-dispatcher
 
@@ -19,8 +19,9 @@ The only "environment" is:
 
 1. A Google Tag Manager account with permission to create/edit custom
    templates and containers (for testing — see `docs/TESTING.md`).
-2. The GTM Community Template Gallery submission flow (for publishing — a
-   manual, human-driven UI action, not automated by anything in this repo).
+2. The GTM Community Template Gallery (for publishing). Only the first
+   listing was a manual submission; since then the Gallery follows this
+   repo's `metadata.yaml` (see the spec's Operational Procedures).
 
 The receiving endpoint `https://api.tapper.ai/gtm/track` no longer exists.
 back-end stopped serving it on 2026-01-27 (Express-to-Fastify rewrite

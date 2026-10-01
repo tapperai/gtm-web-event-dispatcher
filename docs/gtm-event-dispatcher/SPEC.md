@@ -3,7 +3,7 @@
 > **Status:** `DEPRECATED`
 >
 > **Created:** 2026-08-26
-> **Last updated:** 2026-09-29
+> **Last updated:** 2026-10-01
 >
 > **Implemented in:** gtm-web-event-dispatcher
 
@@ -20,54 +20,56 @@ Google's sandbox — not Node, not browser JS). There is no build step, no
 server, no package manager, and no dependency on the rest of the tapperai
 monorepo-of-repos.
 
-**Receiving endpoint is gone (verified 2026-09-29):** `https://api.tapper.ai/gtm/track`
-returns 404 with back-end's own `Route GET:/gtm/track not found` reply. It was
-an Express route in back-end. back-end's Express-to-Fastify rewrite (`1df7f45a`,
-2026-01-24) stopped mounting it, and prod has not served it since back-end image
-`597ee213` deployed on 2026-01-27. The last prod image with the route was
-`fd857e33` (2026-01-26), and no later image restored it. `dcc475b3` (2026-02-26,
-on back-end master 2026-03-10) only deleted the file, which was already
+**Receiving endpoint is gone (verified 2026-09-29, re-checked 2026-10-01):**
+`https://api.tapper.ai/gtm/track` returns HTTP 404 with back-end's own
+not-found body, which echoes the full request URL, query string included:
+`{"error":"Not Found","message":"Route GET:/gtm/track?tclid=x&event=y not found","status_code":404}`.
+It was an Express route in back-end (`gtmTrack`, which published a
+`LinkVisitEventsQueueMessage` to RabbitMQ `LINK_VISIT_EVENTS_QUEUE`).
+back-end's Express-to-Fastify rewrite (`1df7f45a`, 2026-01-24) stopped
+mounting it, and prod has not served it since back-end image `597ee213`
+deployed on 2026-01-27. The last prod image with the route was `fd857e33`
+(2026-01-26), and no later image restored it. `dcc475b3` (2026-02-26, on
+back-end master 2026-03-10) only deleted the file, which was already
 unmounted. No route for it exists on back-end or tracker `master`/`dev`, and
-tracker never had one. Every version of this template, including both published
-versions (`26093be`, `75029f9`) and every branch, may only send to this URL: its
-`send_pixel` permission allows nothing else. So every pixel lands on a 404 and
-the template does nothing useful today.
+tracker never had one. Every version of this template, including both
+published versions (`26093be`, `75029f9`) and every branch, may only send to
+this URL: its `send_pixel` permission allows nothing else. So every pixel
+lands on a 404 and the template does nothing useful today.
 
-**Repo status (verified 2026-08-26, re-checked 2026-09-29):** the estate-board verdict for this repo
-was "RETIRED-IN-EFFECT". That is **not** confirmed by the repo itself:
-- The GitHub repo `tapperai/gtm-web-event-dispatcher` is **not archived**
-  (`isArchived: false`).
+**Repo status (verified 2026-08-26, re-checked 2026-10-01):** the estate-board
+verdict of 2026-08-26 called this repo "RETIRED-IN-EFFECT". The 404 above
+confirms that verdict: the template cannot deliver an event anywhere, so it is
+retired in effect. It is **not formally retired**:
+- The GitHub repo `tapperai/gtm-web-event-dispatcher` is public and **not
+  archived** (`isArchived: false`); `metadata.yaml` is still on `master`, so a
+  Gallery listing (if one exists) is still active.
 - The most recent change to the template code is on the unmerged
-  `flawless-fixes` branch, not `master`: `9805e41` (**2026-06-28**) fixes a real bug (tclid truncation, see
-  below), and `274b1dc` (**2026-07-12** — six weeks before this sweep) does a
-  `CLAUDE.md` rewrite. Before PR #2, `master` HEAD was `7323684`, which is docs and
-  submodule only: PR #1 (`febf7bc`) wired the docs on 2026-08-27, then `7323684`
-  switched the submodule URL to https the same day. The last `template.tpl`
-  change on `master` is `7a7be66` and the last `metadata.yaml` change before
-  PR #2 is `ffe6c6f`, both 2024-03-12. PR #2 (2026-09-29, the deprecation
-  docs) edits only `metadata.yaml`'s `documentation:` line; `versions:` is
-  untouched.
-- That most-recent work lives on a branch, `gtm-web-event-dispatcher/flawless-fixes`,
-  which was **pushed directly and never opened as a PR** and is **not merged
-  into `master`** (GitHub's default branch, per `git remote show origin`).
-  `master` is still on the older, buggier code (`ffe6c6f`'s parent chain).
-- Before PR #2 (this deprecation docs change, opened 2026-09-29) there was
-  one PR: #1 (the docs wiring, merged 2026-08-27). `flawless-fixes` was
-  never opened as a PR, so its fix was never reviewed or merged.
-- A remote branch `main` also exists at `9805e41`, the tclid fix commit and
-  parent of `flawless-fixes`. `main` was the original default branch. `master`
-  was created at `ffe6c6f` and `main` deleted on 2026-06-15, then `main` was
-  re-created at `9805e41` on 2026-06-28. The default branch is `master`.
-- The root `tapper /CLAUDE.md` repo directory does **not** mark this repo
-  archived (unlike `front-end-new`, `ml-modelling`, `ai-suggestions`, etc.,
-  which carry an explicit ⛔ ARCHIVED note).
+  `gtm-web-event-dispatcher/flawless-fixes` branch, not `master`: `9805e41`
+  (**2026-06-28**) fixes a real bug (tclid truncation, see Edge Cases), and
+  `274b1dc` (**2026-07-12**) rewrites `CLAUDE.md`. That branch was pushed
+  directly and never opened as a PR. Its fix would still post to the 404, so
+  merging it is moot while the endpoint is gone.
+- `master` (GitHub's default branch) carries docs-only changes since 2024:
+  PR #1 (`febf7bc`, merged 2026-08-26 20:10 UTC) wired the docs, `7323684`
+  switched the submodule URL to https, PR #3 (`e2f5828`, 2026-09-30) dropped a
+  copied `DOCUMENT_FIRST.md`, and PR #2 (2026-10-01, the deprecation docs)
+  changes only `metadata.yaml`'s `documentation:` line, leaving `versions:`
+  untouched. The last `template.tpl` change on `master` is `7a7be66` and the
+  last `versions:` change is `ffe6c6f`, both 2024-03-12.
+- Stray branches: `main` sits at `9805e41` (the tclid fix, parent of
+  `flawless-fixes`) and still carries its own `metadata.yaml` (second
+  version listed as `7a7be66`, the commit that last changed `template.tpl`,
+  instead of `master`'s `75029f9`, and no `documentation:` line). `main` was the
+  original default branch: `master` was created at `ffe6c6f` and `main`
+  deleted on 2026-06-15, then `main` was re-created at `9805e41` on
+  2026-06-28. `docs/document-first` is the merged PR #1 head.
+- The root `tapper /CLAUDE.md` repo table describes the template as inert with
+  "Retire or restore: decision pending"; it does not mark the repo archived.
 
-So the honest state as of 2026-08-26 is: **abandoned-in-place, not formally
-retired** — a small GTM template whose receiving endpoint no longer exists, with unmerged fixes sitting
-on a stale feature branch, and no repo-level signal (archival, PR, changelog)
-that anyone decided to stop maintaining it. Whether any live GTM container
-still uses this template's published gallery version could not be verified
-from this repo (GTM Gallery usage isn't visible from git).
+Whether any customer's GTM container still fires this template is not visible
+from git or from the GTM Gallery. A measurement is running; see Remaining
+Work item 1.
 
 ---
 
@@ -129,22 +131,34 @@ N/A — no server code in this repo.
 
 ## Operational Procedures
 
-### Publishing a new version to the GTM Community Template Gallery
+### How the GTM Community Template Gallery publishes
+
+Only the first listing is a manual step (a one-time submission to Google).
+After that the Gallery follows this repo's `metadata.yaml`: Google re-reads
+it periodically, a new `sha` added under `versions:` becomes the new published
+version, and other fields (such as `documentation:`) update the listing the
+same way. There is no CI here; `git push` of `template.tpl` alone publishes
+nothing, but a pushed `metadata.yaml` change does.
+
+To publish a new version:
 
 1. Edit `template.tpl` (the only source file).
 2. Load it into the GTM Template Editor and run the built-in preview/test
-   (the `___TESTS___` block + "Run code") — there is no local compiler or CI
+   (the `___TESTS___` block + "Run code"); there is no local compiler or CI
    gate.
-3. Bump `metadata.yaml` with the new commit SHA and a `changeNotes` line.
-4. Submit through the GTM Community Template Gallery UI manually (no CI/CD —
-   `git push` alone does not publish anything to customers).
+3. Commit, then add that commit's SHA with a `changeNotes` line at the top of
+   `metadata.yaml`'s `versions:` and push. The Gallery picks it up from there.
 
-**Verified drift as of 2026-08-26:** `metadata.yaml` on `master` records only
+To remove the listing, Google's documented route is deleting `metadata.yaml`
+(or `LICENSE`) from the repo. Do it on every branch that carries one, which
+today means the stray `main` too (or delete `main`), because `main` was the
+default branch when the template was first submitted.
+
+**Verified drift as of 2026-10-01:** `metadata.yaml` on `master` records only
 two versions (`26093be` Initial Release, `75029f9` "Update identifier
 retrieval method"). The `flawless-fixes` branch's tclid-truncation fix
-(`9805e41`) has **no corresponding `metadata.yaml` entry** — i.e. even if that
-branch were merged, the changelog step of the publish procedure was never
-completed for it.
+(`9805e41`) has **no corresponding `versions:` entry**, so even merged it
+would not publish.
 
 ---
 
@@ -182,22 +196,61 @@ script for this repo; testing is the GTM Template Editor's built-in
 - `README.md` — customer-facing Gallery description.
 - `CLAUDE.md` — repo pointer (this sweep adds the Document First block; a
   fuller AI-codegen-oriented rewrite exists only on the unmerged
-  `flawless-fixes` branch as of 2026-08-26).
+  `flawless-fixes` branch as of 2026-10-01).
 
 ---
 
 ## Remaining Work
 
-1. **Merging `flawless-fixes` is moot while the endpoint is gone:** the tclid
-   fix would still post to a 404.
-2. **Decide: retire or restore.** back-end stopped serving
-   `api.tapper.ai/gtm/track` on 2026-01-27, so the template is inert. To
-   retire, do these steps in order. First, if the template is listed in the GTM
-   Community Template Gallery, take it out: Google's documented removal is
-   deleting `metadata.yaml` or `LICENSE` from the repo. An archived repo is
-   read-only, so this must happen before archiving. Then, per the
-   archive-both-never-delete rule, run `gh repo archive`, set the roster
-   Repositories row to archived with a dated note, mark the repo ⛔ ARCHIVED in
-   the root `tapper /CLAUDE.md` table, and correct its `(LIVE)` row in roster
-   `REPOS.md`. To restore instead, ship a receiving endpoint and record which
-   one in this spec.
+Retiring or restoring the template is an owner decision this spec does not
+make. What each path needs, and the measurement that informs it:
+
+1. **Is anyone still firing it? (measurement running since 2026-10-01 04:00 UTC).**
+   Earlier "0 requests" readings are not reliable: since 2026-08-22 the
+   `_Default` log sink keeps only about 1% of external load-balancer request
+   lines (exclusion `exclude-lb-sampled`), istio-proxy access lines are
+   excluded from Cloud Logging and dropped from OpenObserve for 404s, and
+   back-end's not-found handler logs nothing. Over the 30-day Cloud Logging
+   retention the 1% sample held exactly one `/gtm/track` line, a
+   `curl/8.7.1` GET answered 400 (`body_not_allowed`) on 2026-09-07, which is
+   a manual probe, not a customer. On 2026-10-01 the exclusion's filter gained
+   `AND NOT httpRequest.requestUrl:"/gtm/track"`, so every request to this
+   path is now kept, and a calibration probe (user agent
+   `tapper-gtm-dispatcher-probe/2026-10-01`) was sent at 04:02:19 UTC.
+   Read it on or after 2026-10-15:
+   `gcloud logging read 'resource.type="http_load_balancer" AND httpRequest.requestUrl:"/gtm/track"' --project itlinks-to --freshness=15d`.
+   **Yes, still in use:** any request whose user agent is a browser (not curl,
+   not the probe, not a known crawler). **No:** the probe is present and
+   nothing else is. If the probe is missing, the measurement is broken; fix
+   the filter before reading anything into a zero. After reading, drop the
+   carve-out (restore the filter to
+   `resource.type="http_load_balancer" AND sample(insertId, 0.99)`).
+2. **To retire**, in order:
+   - Take the Gallery listing down: delete `metadata.yaml` on `master` and on
+     every other branch that has one (today `main`), or delete `main`. An
+     archived repo is read-only, so this comes before archiving.
+   - back-end: remove the orphaned `linkVisitEvents` consumer
+     (`src/consumers/rabbitmq/links/linkVisitEvents.ts`, imported from
+     `links/index.ts`). Its only producer was the deleted `gtmTrack` route;
+     the only publish left on `LINK_VISIT_EVENTS_QUEUE` is the consumer's own
+     delay-queue requeue. Also its queue rows in `docs/SURFACE-MAP.md` and
+     the tests that list the file (`hotQueryIndexes`, `userAgentDetails`,
+     `consumerLogFieldsNoRawPayload`).
+   - back-end docs that still describe the flow as live: `docs/links/tracking/SPEC.md`
+     (the "Link Visit Event (Conversion)" diagram and `LINK_VISIT_EVENTS_QUEUE`
+     section, status `SHIPPED`), `docs/links/tracking/TESTING.md`,
+     `docs/links/SPEC.md` and `docs/architecture/SPEC.md`.
+   - estate: `src/data/flows.ts` and `src/data/graph.ts` (the `n-gtm` edge
+     and verdict text, including the "LB logs show 0 requests in 14 days"
+     claim, which item 1 shows was not a reliable reading),
+     `src/assets/sections/org-repos.html` ("RETIRING"), and the generated
+     topology (`svc:gtm-web-event-dispatcher` still has a live-looking `run`
+     edge to back-end from `template.tpl:83`).
+   - Then, per the archive-both-never-delete rule: `gh repo archive`, the
+     roster Repositories row set to archived with a dated note, the repo
+     marked ⛔ ARCHIVED in the root `tapper /CLAUDE.md` table, and its row in
+     roster `REPOS.md` corrected.
+3. **To restore**, ship a receiving endpoint at `api.tapper.ai/gtm/track`
+   (the consumer in item 2 still exists and could be fed again), record it in
+   this spec, then decide `flawless-fixes`: its tclid fix needs a PR, a merge
+   and a `versions:` entry to publish.

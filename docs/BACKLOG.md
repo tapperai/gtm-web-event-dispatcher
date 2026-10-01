@@ -18,7 +18,7 @@ Categories:
 
 ## P0 — open
 
-(none as of 2026-08-26)
+(none as of 2026-10-01)
 
 ---
 
@@ -28,31 +28,25 @@ Categories:
   404. back-end stopped serving it when its Express-to-Fastify rewrite
   (`1df7f45a`) reached prod on 2026-01-27; the last image with the route was
   `fd857e33` (2026-01-26). `dcc475b3` (2026-02-26) only deleted the dead file.
-  The `flawless-fixes` merge question is moot. The open decision is retire
-  (Gallery removal first, then `gh repo archive`, the roster Repositories row
-  and root CLAUDE.md) or restore an endpoint; see the spec's Remaining Work.
-- **Merge decision for `flawless-fixes` branch**: this branch (pushed
-  2026-07-12, never opened as a PR, never merged) fixes a real `tclid`
-  truncation bug in `template.tpl` and rewrites `CLAUDE.md`. Nobody has
-  confirmed with the operator whether to merge it, close it, or whether the
-  repo is retired and the fix is moot. See `docs/gtm-event-dispatcher/SPEC.md`
-  → Remaining Work.
-- **"RETIRED-IN-EFFECT" estate-board verdict (2026-08-26)**: not confirmed by
-  repo evidence (not archived on GitHub, recent push, no archived marker in
-  root `tapper /CLAUDE.md`). Needs an operator decision either way — see the
-  same spec's Overview section for the full evidence trail.
+  The open decision is retire or restore; see the spec's Remaining Work for
+  every step on both paths, including the back-end and estate work.
+- **2026-10-01: is anyone still firing the template?** A measurement is
+  running: `/gtm/track` is carved out of the 1% load-balancer log sampling
+  since 2026-10-01 04:00 UTC, with a calibration probe sent at 04:02:19 UTC.
+  Read on or after 2026-10-15 and drop the carve-out after; the command and
+  the yes/no reading are in the spec's Remaining Work item 1.
 
 ---
 
 ## P1 — open
 
-(none as of 2026-08-26)
+(none as of 2026-10-01)
 
 ---
 
 ## P2 — open
 
-(none as of 2026-08-26)
+(none as of 2026-10-01)
 
 ---
 
@@ -66,6 +60,13 @@ Categories:
 ---
 
 ## Done
+
+- **2026-10-01: moot, `flawless-fixes` merge decision.** Its tclid fix would
+  still post to the 404, so merging it changes nothing while the endpoint is
+  gone. It comes back only on the restore path (spec, Remaining Work item 3).
+- **2026-10-01: settled, the "RETIRED-IN-EFFECT" estate-board verdict
+  (2026-08-26).** The 404 proves it: the template cannot deliver an event.
+  Formal retirement (archive, Gallery removal) is still open above.
 
 - **2026-08-26** — wired `document-first-template` submodule + bootstrapped
   `docs/` (this commit, operator sweep 2026-08-26).
