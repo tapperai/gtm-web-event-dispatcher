@@ -32,7 +32,8 @@ Categories:
   every step on both paths, including the back-end and estate work.
 - **2026-10-01: is anyone still firing the template?** A measurement is
   running: `/gtm/track` is carved out of the 1% load-balancer log sampling
-  since 2026-10-01 04:00 UTC, with a calibration probe sent at 04:02:19 UTC.
+  since 2026-10-01 (effective by 04:13 UTC; calibration probe kept at
+  04:13:36 UTC).
   Read on or after 2026-10-15 and drop the carve-out after; the command and
   the yes/no reading are in the spec's Remaining Work item 1.
 

@@ -205,7 +205,7 @@ script for this repo; testing is the GTM Template Editor's built-in
 Retiring or restoring the template is an owner decision this spec does not
 make. What each path needs, and the measurement that informs it:
 
-1. **Is anyone still firing it? (measurement running since 2026-10-01 04:00 UTC).**
+1. **Is anyone still firing it? (measurement running since 2026-10-01 04:13 UTC).**
    Earlier "0 requests" readings are not reliable: since 2026-08-22 the
    `_Default` log sink keeps only about 1% of external load-balancer request
    lines (exclusion `exclude-lb-sampled`), istio-proxy access lines are
@@ -215,8 +215,10 @@ make. What each path needs, and the measurement that informs it:
    `curl/8.7.1` GET answered 400 (`body_not_allowed`) on 2026-09-07, which is
    a manual probe, not a customer. On 2026-10-01 the exclusion's filter gained
    `AND NOT httpRequest.requestUrl:"/gtm/track"`, so every request to this
-   path is now kept, and a calibration probe (user agent
-   `tapper-gtm-dispatcher-probe/2026-10-01`) was sent at 04:02:19 UTC.
+   path is now kept. The change was applied at about 04:01 UTC and took
+   effect within about 12 minutes: probes at 04:02:19 and 04:03:25 UTC were
+   not kept, the calibration probe at 04:13:36 UTC (user agent
+   `tapper-gtm-dispatcher-probe/2026-10-01`, answered 404) was.
    Read it on or after 2026-10-15:
    `gcloud logging read 'resource.type="http_load_balancer" AND httpRequest.requestUrl:"/gtm/track"' --project itlinks-to --freshness=15d`.
    **Yes, still in use:** any request whose user agent is a browser (not curl,
