@@ -206,9 +206,11 @@ Retiring or restoring the template is an owner decision this spec does not
 make. What each path needs, and the measurement that informs it:
 
 1. **Is anyone still firing it? (measurement running since 2026-10-01 04:13 UTC).**
-   Earlier "0 requests" readings are not reliable: since 2026-08-22 the
-   `_Default` log sink keeps only about 1% of external load-balancer request
-   lines (exclusion `exclude-lb-sampled`), istio-proxy access lines are
+   The 2026-08-26 reading ("0 requests in 14 days" in load-balancer logs) is
+   past the 30-day log retention, so it cannot be re-checked, and a zero
+   taken since then proves little: since 2026-08-22 the `_Default` log sink
+   keeps only a sample of external load-balancer request lines (5%, then 1%
+   from 2026-09-22; exclusion `exclude-lb-sampled`), istio-proxy access lines are
    excluded from Cloud Logging and dropped from OpenObserve for 404s, and
    back-end's not-found handler logs nothing. Over the 30-day Cloud Logging
    retention the 1% sample held exactly one `/gtm/track` line, a
@@ -244,7 +246,8 @@ make. What each path needs, and the measurement that informs it:
      `docs/links/SPEC.md` and `docs/architecture/SPEC.md`.
    - estate: `src/data/flows.ts` and `src/data/graph.ts` (the `n-gtm` edge
      and verdict text, including the "LB logs show 0 requests in 14 days"
-     claim, which item 1 shows was not a reliable reading),
+     claim, which can no longer be re-checked; replace it with item 1's
+     result),
      `src/assets/sections/org-repos.html` ("RETIRING"), and the generated
      topology (`svc:gtm-web-event-dispatcher` still has a live-looking `run`
      edge to back-end from `template.tpl:83`).
